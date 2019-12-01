@@ -1,6 +1,11 @@
 name: Ruby
 
-on: [push]
+on: 
+  push:
+    branches:    
+    - 'master/**'
+    - 'beta/**'
+    - 'stable/**'
 
 jobs:
   build:
@@ -16,9 +21,9 @@ jobs:
       fail-fast: true
 
       matrix:
+        build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
         os: [ ubuntu-16.04 ]
         ruby: [ '2.6.3' ]
-        build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
 
     services:
       redis:
