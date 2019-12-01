@@ -65,6 +65,7 @@ jobs:
       - name: Build App
         env:
           RAILS_ENV: test
+          DB_HOST: localhost
         run: |
           node --version
           gem install bundler -v 1.17.3 --no-doc
