@@ -28,7 +28,8 @@ jobs:
 
       postgres:
         image: postgres:12
-        ports: ["5432:5432"]
+        ports: 
+          - 5432/tcp
 
     steps:
       - uses: actions/checkout@master
@@ -37,10 +38,7 @@ jobs:
 
       - name: debug redis
         run: |
-          redis-server
-          telnet localhost 6379
-          telnet 127.0.0.1 6379
-          telnet 0.0.0.0 6379
+          redis-cli ping
 
       - uses: actions/cache@v1
         with:
