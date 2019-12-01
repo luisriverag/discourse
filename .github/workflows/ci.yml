@@ -35,6 +35,9 @@ jobs:
         uses: harmon758/postgresql-action@v1
         with:
           postgresql version: ${{ matrix.postgres }}
+          
+      - name: debug pg
+        run: pg_isready
 
       - uses: actions/cache@v1
         with:
