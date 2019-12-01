@@ -34,6 +34,13 @@ jobs:
       with:
         fetch-depth: 1
     
+    - name: debug redis
+      run: |
+        redis-server
+        telnet localhost 6379
+        telnet 127.0.0.1 6379
+        telnet 0.0.0.0 6379
+    
     - uses: actions/cache@v1
       with:
         path: vendor/bundle
