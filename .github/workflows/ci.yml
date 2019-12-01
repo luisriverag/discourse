@@ -15,7 +15,6 @@ jobs:
       DISCOURSE_HOSTNAME: www.example.com
       RUBY_GLOBAL_METHOD_CACHE_SIZE: 131072
       BUILD_TYPE: ${{ matrix.build_types }}
-      DISCOURSE_REDIS_HOST: 0.0.0.0
 
     strategy:
       fail-fast: true
