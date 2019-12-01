@@ -3,9 +3,9 @@ name: Ruby
 on: 
   push:
     branches:    
-    - 'master'
-    - 'beta'
-    - 'stable'
+      - 'master/**'
+      - 'beta/**'
+      - 'stable/**'
 
 jobs:
   build:
