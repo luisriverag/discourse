@@ -60,7 +60,7 @@ jobs:
       - name: Setup packages
         uses: mstksg/get-package@v1
         with:
-          apt-get: libpq-dev gifsicle jpegoptim optipng jhead
+          apt-get: postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
       - name: Build App
         env:
