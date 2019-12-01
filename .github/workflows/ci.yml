@@ -18,7 +18,7 @@ jobs:
         build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
         os: [ ubuntu-16.04 ]
         ruby: [ '2.6.3' ]
-        postgres: [ '12.x' ]
+        postgres: [ '12' ]
         redis: [ '4.x' ]
 
     steps:
