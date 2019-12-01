@@ -40,6 +40,12 @@ jobs:
     steps:
       - name: debug pg
         run: pg_isready
+        env:
+          RAILS_ENV: test
+          DB_USERNAME: discourse
+          DB_PASSWORD: discourse
+          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+          RAILS_DB: discourse_test
 
       - uses: actions/checkout@master
         with:
@@ -76,6 +82,7 @@ jobs:
           RAILS_ENV: test
           DB_USERNAME: discourse
           DB_PASSWORD: discourse
+          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
           RAILS_DB: discourse_test
         run: |
           node --version
