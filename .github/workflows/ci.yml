@@ -12,6 +12,8 @@ jobs:
       BUILD_TYPE: ${{ matrix.build_types }}
 
     strategy:
+      fail-fast: true
+
       matrix:
         os: [ ubuntu-16.04 ]
         ruby: [ '2.6.3' ]
