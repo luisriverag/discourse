@@ -30,3 +30,8 @@ jobs:
       uses: mstksg/get-package@v1
       with:
         apt-get: gifsicle jpegoptim optipng jhead
+
+    - name: Before install
+      run: 
+        node --version
+        gem install bundler -v 1.17.3
