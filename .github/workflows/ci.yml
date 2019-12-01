@@ -24,6 +24,10 @@ jobs:
     services:
       postgres:
         image: postgres:${{ matrix.postgres }}
+        env:
+          POSTGRES_USER: discourse
+          POSTGRES_DB: discourse_test
+          POSTGRES_PASSWORD: ""  
         ports: 
           - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -62,7 +66,6 @@ jobs:
       - name: Build App
         env:
           RAILS_ENV: test
-          DB_USERNAME: postgres
         run: |
           node --version
           gem install bundler -v 1.17.3 --no-doc
