@@ -25,51 +25,52 @@ jobs:
         ports:
           - 6379/tcp
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
       postgres:
         image: postgres:12
         ports: ["5432:5432"]
 
     steps:
-    - uses: actions/checkout@master
-      with:
-        fetch-depth: 1
-    
-    - name: debug redis
-      run: |
-        redis-server
-        telnet localhost 6379
-        telnet 127.0.0.1 6379
-        telnet 0.0.0.0 6379
-    
-    - uses: actions/cache@v1
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gem-
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
 
-    - name: Setup ruby
-      uses: actions/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        architecture: 'x64'
+      - name: debug redis
+        run: |
+          redis-server
+          telnet localhost 6379
+          telnet 127.0.0.1 6379
+          telnet 0.0.0.0 6379
 
-    - name: Updates apt-get
-      run: sudo apt-get update
-  
-    - name: Setup packages
-      uses: mstksg/get-package@v1
-      with:
-        apt-get: libpq-dev gifsicle jpegoptim optipng jhead
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gem-
 
-    - name: Build App
-      env:
-        RAILS_ENV: test
-      run: |
-        node --version
-        gem install bundler -v 1.17.3 --no-doc
-        bundle install --jobs 4 --retry 3
-        bin/rails db:setup
+      - name: Setup ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          architecture: 'x64'
 
-    - name: Run
-      run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
+      - name: Updates apt-get
+        run: sudo apt-get update
+
+      - name: Setup packages
+        uses: mstksg/get-package@v1
+        with:
+          apt-get: libpq-dev gifsicle jpegoptim optipng jhead
+
+      - name: Build App
+        env:
+          RAILS_ENV: test
+        run: |
+          node --version
+          gem install bundler -v 1.17.3 --no-doc
+          bundle install --jobs 4 --retry 3
+          bin/rails db:setup
+
+      - name: Run
+        run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
