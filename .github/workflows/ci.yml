@@ -1,10 +1,8 @@
-name: Discourse
+name: ${{ matrix.build_types }}
 
 on: [push]
 
 jobs:
-  name: ${{ matrix.build_types }}
-
   build:
     runs-on: ${{ matrix.os }}
 
