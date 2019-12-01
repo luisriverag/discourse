@@ -1,8 +1,10 @@
-name: Ruby
+name: Discourse
 
 on: [push]
 
 jobs:
+  name: ${{ matrix.build_types }}
+
   build:
     runs-on: ${{ matrix.os }}
 
