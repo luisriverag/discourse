@@ -38,7 +38,7 @@ jobs:
       run: 
         node --version
         gem install bundler -v 1.17.3
-        gem install rake
+        bundle install --jobs 4 --retry 3
 
     - name: Run
       run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
