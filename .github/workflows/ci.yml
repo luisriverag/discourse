@@ -25,6 +25,9 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         architecture: 'x64'
+
+    - name: Updates apt-get
+      run: apt-get update
   
     - name: Setup packages
       uses: mstksg/get-package@v1
