@@ -11,6 +11,8 @@ jobs:
         ruby: [ '2.6.3' ]
 
     steps:
+    - uses: actions/checkout@master
+
     - uses: zhulik/redis-action@v1.0.0
       with:
         redis version: '4'
@@ -19,7 +21,6 @@ jobs:
       with:
         postgresql version: '12'
 
-    - uses: actions/checkout@master
     - name: Setup ruby
       uses: actions/setup-ruby@v1
       with:
@@ -38,7 +39,7 @@ jobs:
       run: 
         node --version
         gem install bundler -v 1.17.3
-        bundle install --jobs 4 --retry 3
+        bundle install --jobs 3 --retry 3
 
     - name: Run
       run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
