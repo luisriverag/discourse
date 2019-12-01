@@ -1,11 +1,6 @@
 name: Ruby
 
-on: 
-  push:
-    branches:    
-      - master
-      - beta
-      - stable
+on: [push]
 
 jobs:
   build:
