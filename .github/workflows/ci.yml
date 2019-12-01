@@ -53,11 +53,17 @@ jobs:
 
       - name: Updates apt-get
         run: sudo apt-get update
+      
+      - name: Setup postgres packages
+        run: |
+          sudo bash -c "echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list"
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get -yqq install libpq-dev postgresql-client-11
 
-      - name: Setup packages
+      - name: Setup image packages
         uses: mstksg/get-package@v1
         with:
-          apt-get: libpq-dev gifsicle jpegoptim optipng jhead postgresql-client-11
+          apt-get: gifsicle jpegoptim optipng jhead
 
       - name: Build App
         env:
