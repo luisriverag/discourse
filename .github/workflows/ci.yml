@@ -57,7 +57,7 @@ jobs:
       - name: Setup packages
         uses: mstksg/get-package@v1
         with:
-          apt-get: libpq-dev gifsicle jpegoptim optipng jhead
+          apt-get: libpq-dev gifsicle jpegoptim optipng jhead postgresql-client-${{ matrix.postgres }}
 
       - name: Build App
         env:
