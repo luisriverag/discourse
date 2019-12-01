@@ -18,25 +18,23 @@ jobs:
         build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
         os: [ ubuntu-16.04 ]
         ruby: [ '2.6.3' ]
-
-    services:
-      postgres:
-        image: postgres:12
-        ports: 
-          - 5432/tcp
+        postgres: [ '12.x' ]
+        redis: [ '4.x' ]
 
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
 
-      - uses: shogo82148/actions-setup-redis@v1
+      - name: Setup redis
+        uses: shogo82148/actions-setup-redis@v1
         with:
-          redis-version: '4.x'
+          redis-version: ${{ matrix.redis }}
 
-      - name: debug redis
-        run: |
-          redis-cli ping
+      - name: Setup postgres
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: ${{ matrix.postgres }}
 
       - uses: actions/cache@v1
         with:
