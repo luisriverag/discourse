@@ -11,6 +11,17 @@ module Middleware
       env["ANON_CACHE_DURATION"] = duration
     end
 
+    # This gives us an API to insert anonymous cache segments
+    def self.cache_key_segments
+      @@cache_key_segments ||= {
+        m: ->(h) { h.is_mobile? },
+        c: ->(h) { h.is_crawler? },
+        b: ->(h) { h.has_brotli? },
+        t: ->(h) { h.theme_ids.join(',') },
+        ca: ->(_) { GlobalSetting.compress_anon_cache.to_s }
+      }
+    end
+
     class Helper
       RACK_SESSION     = "rack.session"
       USER_AGENT       = "HTTP_USER_AGENT"
@@ -73,7 +84,11 @@ module Middleware
       end
 
       def cache_key
-        @cache_key ||= "ANON_CACHE_#{@env["HTTP_ACCEPT"]}_#{@env["HTTP_HOST"]}#{@env["REQUEST_URI"]}|m=#{is_mobile?}|c=#{is_crawler?}|b=#{has_brotli?}|t=#{theme_ids.join(",")}#{GlobalSetting.compress_anon_cache}"
+        return @cache_key if defined?(@cache_key)
+
+        @cache_key = +"ANON_CACHE_#{@env["HTTP_ACCEPT"]}_#{@env["HTTP_HOST"]}#{@env["REQUEST_URI"]}"
+        Middleware::AnonymousCache.cache_key_segments.each { |k, v| @cache_key << "|#{k}=#{v.call(self)}" }
+        @cache_key
       end
 
       def theme_ids
