@@ -21,4 +21,4 @@ jobs:
 
     steps:
       - name: Run Tests
-        uses: docker://discourse/discourse-test:release
+        uses: docker://discourse/discourse_test:release
