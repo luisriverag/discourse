@@ -38,15 +38,6 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: debug pg
-        run: pg_isready
-        env:
-          RAILS_ENV: test
-          DB_USERNAME: discourse
-          DB_PASSWORD: discourse
-          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
-          RAILS_DB: discourse_test
-
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
