@@ -11,6 +11,14 @@ jobs:
       RUBY_GLOBAL_METHOD_CACHE_SIZE: 131072
       BUILD_TYPE: ${{ matrix.build_types }}
 
+    strategy:
+      fail-fast: true
+
+      matrix:
+        build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
+        os: [ ubuntu-latest ]
+        ruby: [ '2.6.3' ]
+
     steps:
       - name: Run Tests
         uses: docker://discourse/discourse-test:release
