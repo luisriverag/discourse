@@ -19,7 +19,7 @@ jobs:
 
       matrix:
         build_types: [ 'BACKEND', 'FRONTEND', 'LINT']
-        os: [ ubuntu-16.04 ]
+        os: [ ubuntu-latest ]
         ruby: [ '2.6.3' ]
         postgres: [ '12' ]
         redis: [ '4.x' ]
