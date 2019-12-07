@@ -25,9 +25,9 @@ jobs:
       postgres:
         image: postgres:11
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_USER: discourse
+          POSTGRES_PASSWORD: discourse
+          POSTGRES_DB: discourse_test
         ports: 
           - 5432:5432
         options: >-
@@ -76,12 +76,13 @@ jobs:
           DB_PORT: ${{ job.services.postgres.ports['5432'] }}
           DB_HOST: localhost
           RAILS_DB: discourse_test
+          DATABASE_URL: postgresql://localhost/discourse_test
 
         run: |
           node --version
           gem install bundler -v 1.17.3 --no-doc
           bundle install --jobs 4 --retry 3
-          # bin/rails db:setup
+          bin/rails db:setup
 
       - name: Run
         run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
