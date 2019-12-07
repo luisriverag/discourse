@@ -11,7 +11,6 @@ jobs:
       RUBY_GLOBAL_METHOD_CACHE_SIZE: 131072
       BUILD_TYPE: ${{ matrix.build_types }}
       RAILS_ENV: test
-      DB_PORT: ${{ job.services.postgres.ports['5432'] }}
       DATABASE_URL: postgresql://discourse:discourse@localhost/discourse_test
 
 
