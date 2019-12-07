@@ -10,6 +10,7 @@ jobs:
       DISCOURSE_HOSTNAME: www.example.com
       RUBY_GLOBAL_METHOD_CACHE_SIZE: 131072
       BUILD_TYPE: ${{ matrix.build_types }}
+      RAILS_ENV: test
 
     strategy:
       fail-fast: true
@@ -68,21 +69,18 @@ jobs:
         with:
           apt-get: postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
-      - name: Build App
+      - name: Bundle install
         env:
-          RAILS_ENV: test
-          DB_USERNAME: discourse
-          DB_PASSWORD: discourse
           DB_PORT: ${{ job.services.postgres.ports['5432'] }}
-          DB_HOST: localhost
-          RAILS_DB: discourse_test
           DATABASE_URL: postgresql://discourse:discourse@localhost/discourse_test
 
         run: |
-          node --version
           gem install bundler -v 1.17.3 --no-doc
           bundle install --without development --deployment --jobs 4 --retry 3
-      #     bin/rails db:setup
 
-      # - name: Run
-      #   run: bundle exec rake db:create && LOAD_PLUGINS=1 bundle exec rake db:migrate
+      - name: Create database          
+        run: bin/rake db:create db:migrate
+
+      - name: Rubocop
+        run: rubocop .
+        
