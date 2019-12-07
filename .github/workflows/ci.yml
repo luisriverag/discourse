@@ -18,7 +18,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        build_types: [ 'BACKEND' ] #, 'FRONTEND', 'LINTING']
+        build_types: [ 'BACKEND', 'FRONTEND', 'LINT']
         os: [ ubuntu-latest ]
         ruby: [ '2.6.3' ]
         postgres: [ '12' ]
@@ -76,9 +76,26 @@ jobs:
           gem install bundler -v 1.17.3 --no-doc
           bundle install --without development --deployment --jobs 4 --retry 3
 
+      - name: Yarn install
+        run: yarn install --dev;
+
       - name: Create database          
         run: bin/rake db:create db:migrate
 
       - name: Rubocop
-        run: rubocop .
+        if: env.BUILD_TYPE == 'LINT'
+        run: bundle exec rubocop .
+        
+      - name: RSpec
+        if: env.BUILD_TYPE == 'BACKEND'
+        run: |
+          bundle exec rspec
+          bundle exec rake plugin:spec
+
+      - name: QUnit
+        if: env.BUILD_TYPE == 'FRONTEND'
+        run: |
+          bundle exec rake qunit:test['1200000']
+          bundle exec rake qunit:test['1200000','/wizard/qunit']
+          bundle exec rake plugin:qunit
         
