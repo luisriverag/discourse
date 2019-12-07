@@ -61,16 +61,17 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           architecture: 'x64'
 
-      - uses: actions/cache@v1
+      - name: Setup bundler
+        run: gem install bundler -v 1.17.3 --no-doc
+
+      - name: Bundler cache
+        uses: actions/cache@v1
         id: bundler-cache
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gem-
-
-      - name: Setup bundler
-        run: gem install bundler -v 1.17.3 --no-doc
       
       - name: Setup gems
         run: bundle install --without development --deployment --jobs 4 --retry 3
@@ -79,8 +80,9 @@ jobs:
       - name: Get yarn cache directory
         id: yarn-cache-dir
         run: echo "::set-output name=dir::$(yarn cache dir)"
-  
-      - uses: actions/cache@v1
+    
+      - name: Yarn cache
+        uses: actions/cache@v1
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir.outputs.dir }}
