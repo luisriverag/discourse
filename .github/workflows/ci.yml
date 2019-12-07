@@ -63,13 +63,8 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           architecture: 'x64'
 
-      - name: Updates apt-get
-        run: sudo apt-get update
-
       - name: Setup packages
-        uses: mstksg/get-package@v1
-        with:
-          apt-get: postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
+        run: sudo apt-get -yqq install postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
       - name: Bundle install
         run: |
