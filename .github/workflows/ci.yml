@@ -11,6 +11,9 @@ jobs:
       RUBY_GLOBAL_METHOD_CACHE_SIZE: 131072
       BUILD_TYPE: ${{ matrix.build_types }}
       RAILS_ENV: test
+      DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+      DATABASE_URL: postgresql://discourse:discourse@localhost/discourse_test
+
 
     strategy:
       fail-fast: true
@@ -70,10 +73,6 @@ jobs:
           apt-get: postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
       - name: Bundle install
-        env:
-          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
-          DATABASE_URL: postgresql://discourse:discourse@localhost/discourse_test
-
         run: |
           gem install bundler -v 1.17.3 --no-doc
           bundle install --without development --deployment --jobs 4 --retry 3
