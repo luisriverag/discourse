@@ -18,7 +18,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        build_types: [ 'BACKEND', 'FRONTEND', 'LINTING']
+        build_types: [ 'BACKEND' ] #, 'FRONTEND', 'LINTING']
         os: [ ubuntu-latest ]
         ruby: [ '2.6.3' ]
         postgres: [ '12' ]
@@ -26,7 +26,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:11
+        image: postgres:10
         env:
           POSTGRES_USER: discourse
           POSTGRES_PASSWORD: discourse
