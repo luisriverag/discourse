@@ -63,7 +63,10 @@ jobs:
           architecture: 'x64'
 
       - name: Setup packages
-        run: sudo apt-get -yqq install postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
+        run: |
+          echo 'deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main' | sudo tee /etc/apt/sources.list.d/pgdg.list > /dev/null
+          wget --no-check-certificate -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo -u root apt-key add -
+          sudo apt-get -yqq install postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
       - name: Setup bundler
         run: gem install bundler -v 1.17.3 --no-doc
