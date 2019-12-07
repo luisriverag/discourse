@@ -66,10 +66,12 @@ jobs:
       - name: Setup packages
         run: sudo apt-get -yqq install postgresql-client libpq-dev gifsicle jpegoptim optipng jhead
 
-      - name: Bundle install
-        run: |
-          gem install bundler -v 1.17.3 --no-doc
-          bundle install --without development --deployment --jobs 4 --retry 3
+      - name: Setup bundler
+        run: gem install bundler -v 1.17.3 --no-doc
+      
+      - name: Setup gems
+        run: bundle install --without development --deployment --jobs 4 --retry 3
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Yarn install
         run: yarn install --dev;
